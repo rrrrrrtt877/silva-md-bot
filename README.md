@@ -3,12 +3,21 @@
 ### 🌟 Connect With Me
 <p align="center">
   <a href="https://wa.me/254700143167"><img src="https://raw.githubusercontent.com/shizothetechie/database/main/icon/WhatsApp.png" width="10%"></a>
-  <a href="https://tiktok.com/@silva.edits6"><img src="https://raw.githubusercontent.com/shizothetechie/database/main/icon/Instagram.png" width="11%"></a>
-  <a href="https://www.facebook.com/silva"><img src="https://raw.githubusercontent.com/shizothetechie/database/main/icon/Facebook.png" width="12%"></a>
-  <a href="https://twitter.com/silva"><img src="https://raw.githubusercontent.com/shizothetechie/database/main/icon/twitter.png" width="10%"></a>
+  <a href="https://instagram.com/_its.silva"><img src="https://raw.githubusercontent.com/shizothetechie/database/main/icon/Instagram.png" width="11%"></a>
+  <a href="https://www.facebook.com/profile.php?id=100055490090211"><img src="https://raw.githubusercontent.com/shizothetechie/database/main/icon/Facebook.png" width="12%"></a>
+  <a href="https://x.com/silva_african"><img src="https://raw.githubusercontent.com/shizothetechie/database/main/icon/twitter.png" width="10%"></a>
 </p>
 
 ---
+# Support Silva Tech Inc ❤️
+
+[![Sponsor SilvaTechB](https://img.shields.io/badge/Sponsor-SilvaTechB-important)](https://github.com/sponsors/SilvaTechB)
+
+---
+
+**Empower innovation and creativity!** Become a sponsor of Silva Tech Inc to help us bring more amazing projects to life. Your support makes a big difference.  
+👉 [Click here to sponsor us](https://github.com/sponsors/SilvaTechB)
+
 
 
 [![Typing SVG](https://readme-typing-svg.demolab.com?font=Black+Ops+One&size=35&pause=750&color=952323&width=435&lines=Hello;Welcome+%F0%9F%98%8A+to+Silva+MD+bot;This+is+our+official+repository+;Updated+on+September+2024;Silva+team+is+offering+the+best;For+this+bot;Fork+and+give+a+star)](https://git.io/typing-svg)
@@ -63,12 +72,20 @@ To set up the Silva MD Bot quickly, follow our detailed tutorial on YouTube:
 ### **Fork & Star the Repository**
    - Start by forking this repository and giving it a ⭐ to support Silva Tech!
      To set up the Silva MD Bot quickly, first fork this repository:
+     
 [![Silva MD Bot Github Repo](https://img.shields.io/badge/Github-Fork%20Repo-red?style=for-the-badge&logo=Github)](https://github.com/SilvaTechB/silva-md-bot/fork)
 
 ### **Pairing the Bot**
    - Visit the bot site to generate a session code.
+     
+      SERVER A
+     
+     [![A Silva MD Bot Github Repo](https://img.shields.io/badge/Whatsapp-Pair%20Code-green?style=for-the-badge&logo=Whatsapp)](https://creds-session.onrender.com/)
 
-     [![Silva MD Bot Github Repo](https://img.shields.io/badge/Whatsapp-Pair%20Code-green?style=for-the-badge&logo=Whatsapp)](https://silva-creds.onrender.com/)
+     SERVER B
+     
+      [![B Silva MD Bot Github Repo](https://img.shields.io/badge/Whatsapp-Pair%20Code-green?style=for-the-badge&logo=Whatsapp)](https://silva-creds.onrender.com/)
+    
    - Ensure to delete any existing `creds.json` file if redeploying.
 
 ### **Step-by-Step Deployment Guide**
@@ -77,7 +94,7 @@ To set up the Silva MD Bot quickly, follow our detailed tutorial on YouTube:
 1. [Create an Account on Heroku](https://signup.heroku.com/) if you haven’t already.
 2. Click the button below to deploy directly on Heroku:
    <br>
-   <a href='https://dashboard.heroku.com/new?template=https://github.com/SilvaTechB/silva-md-bot' target="_blank">
+   <a href='https://silva-md-fork-checker.vercel.app/' target="_blank">
       <img alt='Deploy on Heroku' src='https://img.shields.io/badge/-DEPLOY-purple?style=for-the-badge&logo=heroku&logoColor=white'/>
    </a>
 
@@ -86,7 +103,7 @@ To set up the Silva MD Bot quickly, follow our detailed tutorial on YouTube:
 2. Obtain a [Koyeb API Key](https://app.koyeb.com/account/api) and configure the [DATABASE_URL](https://github.com/SilvaTechB/silva-md-bot/wiki/DATABASE_URL).
 3. Deploy your app using the button below:
    <br>
-   <a href='https://github.com/SilvaTechB/silva-md-bot' target="_blank">
+   <a href='https://silva-md-fork-checker.vercel.app/' target="_blank">
       <img alt='Deploy on Koyeb' src='https://img.shields.io/badge/-DEPLOY-red?style=for-the-badge&logo=koyeb&logoColor=white'/>
    </a>
 
@@ -94,7 +111,7 @@ To set up the Silva MD Bot quickly, follow our detailed tutorial on YouTube:
 1. [Create an Account on Railway](https://railway.app/login) if you don’t have one.
 2. Click the button below to deploy using Railway:
    <br>
-   <a href='https://railway.app/template/q20OfH?referralCode=b9IKyc' target="_blank">
+   <a href='https://silva-md-fork-checker.vercel.app/' target="_blank">
       <img alt='Deploy on Railway' src='https://img.shields.io/badge/-DEPLOY-purple?style=for-the-badge&logo=railway&logoColor=white'/>
    </a>
 
@@ -110,9 +127,9 @@ To set up the Silva MD Bot quickly, follow our detailed tutorial on YouTube:
 <details>
 <summary>Meet Our Team</summary>
 
-| ![SHIZO](https://github.com/shizothetechie.png?size=100) | ![GITHUB](https://github.com/xei-sensei.png?size=100) | ![Silva Team](https://github.com/SilvaTechB.png?size=100) | ![Manager](https://github.com/Sylivanu.png?size=100) | ![Lazack](https://github.com/Lazack28.png?size=100) | ![FG98F](https://github.com/FG98F.png?size=100) |
+| ![SHIZO](https://github.com/SilvaTechB.png?size=100) | ![GITHUB](https://github.com/xei-sensei.png?size=100) | ![Silva Team](https://github.com/SilvaTechB.png?size=100) | ![Manager](https://github.com/Sylivanu.png?size=100) | ![Lazack](https://github.com/Lazack28.png?size=100) | ![FG98F](https://github.com/FG98F.png?size=100) |
 | --- | --- | --- | --- | --- | --- |
-| [SHIZO](https://github.com/shizothetechie) | [GITHUB](https://github.com/xei-sensei) | [TEAM SILVA](https://github.com/SilvaTechB) | [MANAGER](https://github.com/Sylivanu) | [LAZACK](https://github.com/Lazack28) | [FG98F](https://github.com/FG98F) |
+| [Silva team](https://silva-md-fork-checker.vercel.app/) | [GITHUB](https://github.com/xei-sensei) | [TEAM SILVA](https://github.com/SilvaTechB) | [MANAGER](https://github.com/Sylivanu) | [LAZACK](https://github.com/Lazack28) | [FG98F](https://github.com/FG98F) |
 
 </details>
 
