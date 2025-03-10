@@ -1,89 +1,110 @@
-import axios from 'axios';
+import os from 'os';
+import fs from 'fs';
+import path from 'path';
+import moment from 'moment-timezone';
+import { promisify } from 'util';
 
-// Function to fetch data with retries
+const readdir = promisify(fs.readdir);
 
-const fetchWithRetries = async (url, retries = 3, delay = 2000) => {
+let handler = async (m, { conn }) => {
+  // Load media resources
+  const menuImage = 'https://i.imgur.com/PEZ5QL2.jpeg';
+  const audioUrl = 'https://github.com/SilvaTechB/silva-md-bot/raw/main/media/Menu.mp3';
 
-  let attempt = 0;
+  // Dynamic command loader with async/await
+  const lazackPath = './lazackcmds';
+  const commands = await readdir(lazackPath);
+  const commandList = commands
+    .map((cmd, idx) => `┠─ ◦ ${idx + 1}. ${path.parse(cmd).name}`)
+    .join('\n');
 
-  while (attempt < retries) {
+  // Enhanced system monitor
+  const sysInfo = {
+    totalRAM: `${(os.totalmem() / (1024 ** 3)).toFixed(2)} GB`,
+    usedRAM: `${((os.totalmem() - os.freemem()) / (1024 ** 3)).toFixed(2)} GB`,
+    uptime: moment.duration(os.uptime(), 'seconds').humanize(),
+    timestamp: moment.tz('Africa/Nairobi').format('ddd DD/MM/YY HH:mm:ss'),
+    platform: `${os.platform()} ${os.arch()}`,
+    version: '4.1.0',
+    developer: '@SilvaTechB'
+  };
 
-    try {
-
-      const { data } = await axios.get(url);
-
-      return data; // Return the data if the request is successful
-
-    } catch (error) {
-
-      attempt++;
-
-      console.error(`Attempt ${attempt} failed: ${error.message}`);
-
-      if (attempt < retries) {
-
-        console.log(`Retrying in ${delay / 1000} seconds...`);
-
-        await new Promise(resolve => setTimeout(resolve, delay)); // Delay before retry
-
-      } else {
-
-        throw new Error('Max retries reached. Please try again later.');
-
-      }
-
-    }
-
-  }
-
-};
-
-let handler = async (m, { text, usedPrefix, command, conn }) => {
-
-  try {
-
-    // Attempt to fetch a random "Why" question with retries
-
-    const data = await fetchWithRetries('https://nekos.life/api/v2/why');
-
+  // Modern UI themes
+  const menuTemplates = {
+    cyberpunk: ({ user, commands, ...info }) => `
+╭──「 SILVA MD ⁣𓄹▸ᴮᴼᵀ 」
+│ ◦ ʜᴇʏ ${user}
+│ ◦ ${info.timestamp}
+╰┬─────────────
+╭┴─────────────
+│ ˹⚡˼ ʀᴀᴍ: ${info.usedRAM}/${info.totalRAM}
+│ ˹🕒˼ ᴜᴘᴛɪᴍᴇ: ${info.uptime}
+│ ˹💻˼ ᴏs: ${info.platform}
+╰┬─────────────
+╭┴──「 ᴄᴏᴍᴍᴀɴᴅs 」
+${commands}
+╰──────────────────
+🔗 github.com/SilvaTechB
+    `.trim(),
     
+    neon: ({ user, ...info }) => `
+▗▄▄ ▸▸◂ 𝐒𝐈𝐋𝐕𝐀𝐌𝐃
+  ╭───────────
+  │ ◦ 𝗛𝗲𝘆 ${user}
+  │ ◦ ${info.timestamp}
+  ╰┬──────────
+  ╭┴──────────
+  │ 𝗥𝗔𝗠: ${info.usedRAM}/${info.totalRAM}
+  │ 𝗨𝗣𝗧𝗜𝗠𝗘: ${info.uptime}
+  ╰┬──────────
+  ╭┴─「 𝗖𝗠𝗗𝗦 」
+  ${commandList}
+▄▖▝▝▖▄▄▄▖
+    `.trim()
+  };
 
-    // Log the API response for debugging (optional)
+  // Generate dynamic content
+  const selectedTheme = Math.random() > 0.5 ? 'cyberpunk' : 'neon';
+  const status = menuTemplates[selectedTheme]({
+    user: m.pushName || 'User',
+    commands: commandList,
+    ...sysInfo
+  });
 
-    console.log('API Response:', data);
-
-    // Check if the response contains a valid "Why" question
-
-    if (data && data.why && data.why.trim() !== '') {
-
-      // Send the valid "Why" question as a response
-
-      const responseText = `*Tell Me:* \n\n\`\`\`${data.why}\`\`\``;
-
-      await conn.sendMessage(m.chat, { text: responseText }, { quoted: m });
-
-    } else {
-
-      // Fallback if no valid response is returned
-
-      await conn.sendMessage(m.chat, { text: '❌ The API returned an empty or invalid response. Please try again later.' }, { quoted: m });
-
+  // Send multimedia menu
+  await conn.sendMessage(m.chat, { 
+    image: { url: menuImage },  
+    caption: status,
+    contextInfo: {
+      mentionedJid: [m.sender],
+      forwardingScore: 999,
+      isForwarded: true,
+      forwardedNewsletterMessageInfo: {
+        newsletterJid: '120363200367779016@newsletter',
+        newsletterName: 'SILVA SPARK 💖',
+        serverMessageId: 143
+      }
     }
+  }, { quoted: m });
 
-  } catch (e) {
-
-    console.error(e);
-
-    await conn.sendMessage(m.chat, { text: `❌ Something went wrong: ${e.message}` }, { quoted: m });
-
-  }
-
+  // Send audio with metadata
+  await conn.sendMessage(m.chat, { 
+    audio: { url: audioUrl }, 
+    mimetype: 'audio/mp4',
+    ptt: true,
+    contextInfo: {
+      externalAdReply: {
+        title: '✨ SILVA MD Experience',
+        body: 'Advanced AI-Powered Bot',
+        thumbnailUrl: menuImage,
+        mediaType: 1
+      }
+    }
+  }, { quoted: m });
 };
 
-handler.help = ['why'];
-
-handler.tags = ['fun'];
-
-handler.command = /^(why)$/i;
+handler.help = ['menss'];
+handler.tags = ['core'];
+handler.command = ['menss', 'helpss'];
 
 export default handler;

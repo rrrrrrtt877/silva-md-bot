@@ -1,77 +1,102 @@
-// Function to handle AFK status and respond to mentions/messages
-export async function before(message) {
-  const user = global.db.data.users[message.sender]; // Access user data
+// AFK Script: Standalone Version
 
-  // If the user types 'afk [reason]', set the user to AFK with a reason
-  if (message.text.toLowerCase().startsWith('afk ')) {
-    const reason = message.text.slice(4).trim(); // Extract the reason after "afk "
-    
-    if (reason) {
-      user.afk = Date.now(); // Mark the time the user went AFK
-      user.afkReason = reason; // Store the reason for being AFK
-      await message.reply(`💤 You are now AFK with reason: ${reason}`);
-    } else {
-      await message.reply("❌ Please provide a reason after 'afk'. Example: 'afk I'm busy'.");
-    }
-    return true; // Exit after processing the 'afk' command
+// In-memory database to store user data
+const db = {};
+
+// Function to format duration into hh:mm:ss
+function formatDuration(ms) {
+  const seconds = Math.floor(ms / 1000) % 60;
+  const minutes = Math.floor(ms / (1000 * 60)) % 60;
+  const hours = Math.floor(ms / (1000 * 60 * 60));
+  return [hours, minutes, seconds]
+    .map((v) => v.toString().padStart(2, '0'))
+    .join(':');
+}
+
+// Main function to handle AFK logic
+async function handleMessage(message) {
+  // Ensure the message and sender exist
+  if (!message || !message.sender) return;
+  
+  // Initialize user data in the database if it doesn't exist
+  if (!db[message.sender]) {
+    db[message.sender] = { afk: -1, afkReason: '' };
   }
 
-  // If the user types 'active', deactivate AFK status
-  if (message.text.toLowerCase() === 'active') {
+  const user = db[message.sender];
+  const text = message.text?.toLowerCase() || '';
+
+  // Command: Set AFK status
+  if (text.startsWith('afk ')) {
+    const reason = text.slice(4).trim(); // Extract reason
+    if (!reason) {
+      return await reply(message, "❌ Please provide a reason after 'afk'. Example: 'afk I'm busy'.");
+    }
+
+    user.afk = Date.now(); // Set AFK timestamp
+    user.afkReason = reason; // Store AFK reason
+    return await reply(message, `💤 You are now AFK with reason: ${reason}`);
+  }
+
+  // Command: Deactivate AFK status
+  if (text === 'active') {
     if (user.afk > -1) {
-      const afkDuration = (new Date() - user.afk); // Calculate AFK duration
-      const afkDurationString = new Date(afkDuration).toISOString().substr(11, 8); // Format to hh:mm:ss
-
-      await message.reply(`✅ You are no longer AFK! ▢ *AFK Duration:* ${afkDurationString}`);
+      const afkDuration = formatDuration(Date.now() - user.afk); // Calculate AFK duration
       user.afk = -1; // Reset AFK status
-      user.afkReason = ''; // Clear the reason
+      user.afkReason = ''; // Clear AFK reason
+      return await reply(message, `✅ You are no longer AFK! ▢ *AFK Duration:* ${afkDuration}`);
     } else {
-      await message.reply("❌ You are not currently AFK.");
+      return await reply(message, "❌ You are not currently AFK.");
     }
-    return true; // Exit after processing the 'active' command
   }
 
-  // Handle mentions, quoted messages, and private messages
+  // Handle mentions or private messages
   const mentionedJids = [
     ...(message.mentionedJid || []),
     ...(message.quoted ? [message.quoted.sender] : []),
   ];
 
-  const isPrivateChat = message.chat.endsWith('@s.whatsapp.net'); // Check if it's a private chat
+  for (const mentionedJid of mentionedJids) {
+    const mentionedUser = db[mentionedJid];
+    if (!mentionedUser || mentionedUser.afk < 0) continue; // Skip if not AFK
 
-  for (let mentionedJid of mentionedJids) {
-    const mentionedUser = global.db.data.users[mentionedJid];
-    if (!mentionedUser || mentionedUser.afk < 0) continue; // Skip if the user is not AFK
-
-    const afkDuration = (new Date() - mentionedUser.afk); // AFK duration
-    const afkDurationString = new Date(afkDuration).toISOString().substr(11, 8); // Format to hh:mm:ss
-
+    const afkDuration = formatDuration(Date.now() - mentionedUser.afk);
     const reason = mentionedUser.afkReason || 'Without reason';
 
-    // Notify others that the mentioned user is AFK
-    await message.reply(`
-      💤 The user you mentioned is AFK
-      ▢ *Reason:* ${reason}
-      ▢ *AFK Duration:* ${afkDurationString}
-    `.trim());
+    await reply(
+      message,
+      `🛌 The user you mentioned is AFK:\n▢ *Reason:* ${reason}\n▢ *AFK Duration:* ${afkDuration}`
+    );
   }
 
-  // Notify the sender in private chats if the recipient is AFK
-  if (isPrivateChat) {
-    const recipient = global.db.data.users[message.chat];
+  // Notify sender in private chats if the recipient is AFK
+  if (message.chat.endsWith('@s.whatsapp.net')) {
+    const recipient = db[message.chat];
     if (recipient && recipient.afk > -1) {
-      const afkDuration = (new Date() - recipient.afk); // AFK duration
-      const afkDurationString = new Date(afkDuration).toISOString().substr(11, 8); // Format to hh:mm:ss
-
+      const afkDuration = formatDuration(Date.now() - recipient.afk);
       const reason = recipient.afkReason || 'Without reason';
 
-      await message.reply(`
-        💤 The user you are messaging is currently AFK
-        ▢ *Reason:* ${reason}
-        ▢ *AFK Duration:* ${afkDurationString}
-      `.trim());
+      await reply(
+        message,
+        `💤 The user you are messaging is currently AFK:\n▢ *Reason:* ${reason}\n▢ *AFK Duration:* ${afkDuration}`
+      );
     }
   }
+}
 
-  return true; // Indicate successful processing
+// Mock reply function to simulate bot replies
+async function reply(message, response) {
+  console.log(`Replying to ${message.sender}: ${response}`);
+}
+
+// Example message input for testing
+const testMessages = [
+  { sender: 'user1', text: 'afk I am busy', chat: 'user1@s.whatsapp.net' },
+  { sender: 'user1', text: 'active', chat: 'user1@s.whatsapp.net' },
+  { sender: 'user2', text: 'Hello', mentionedJid: ['user1'] },
+];
+
+// Simulate processing messages
+for (const msg of testMessages) {
+  handleMessage(msg);
 }

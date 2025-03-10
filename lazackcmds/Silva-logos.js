@@ -2,7 +2,7 @@
 let handler = async (m, { conn, args, text, usedPrefix, command }) => {
 	
    let tee = `✳️ ${mssg.notext}\n\n📌 ${mssg.example}: *${usedPrefix + command}* Ultra`
-   let too = `✳️ ${mssg.textSe} *+* \n\n📌 ${mssg.example}: \n*${usedPrefix + command}* Global *+* TechInfo`
+   let too = `✳️ ${mssg.textSe} *+* \n\n📌 ${mssg.example}: \n*${usedPrefix + command}* Silva *+* TechInfo`
     m.react(rwait)
 
 switch (command) {
