@@ -1,49 +1,36 @@
-import { exec } from 'child_process';
-import fs from 'fs';
-import path from 'path';
+import { exec } from "child_process";
+import path from "path";
 
-let handler = async (m, { text, usedPrefix, command }) => {
-  // Define the repository URL
-  const repoUrl = 'https://github.com/SilvaTechB/silva-md-bot';
-
-  // Define the target folder
-  const targetFolder = path.join(__dirname, 'lazackcmds'); // Ensure path compatibility
-
-  // Check if the target folder exists; if not, create it
-  if (!fs.existsSync(targetFolder)) {
-    fs.mkdirSync(targetFolder, { recursive: true }); // Create folders recursively if needed
-  }
-
-  // Determine the git command to use
-  const gitCommand = fs.existsSync(path.join(targetFolder, '.git'))
-    ? `git -C ${targetFolder} pull` // Pull updates if the folder is already a git repository
-    : `git clone ${repoUrl} ${targetFolder}`; // Clone the repository if not already a git repository
+let handler = async (m) => {
+  const targetFolder = path.join(process.cwd(), "lazackcmds"); // Bot folder
 
   try {
-    // Execute the git command
-    await new Promise((resolve, reject) => {
-      exec(gitCommand, (err, stdout, stderr) => {
-        if (err) {
-          reject(new Error(`Git command failed:\n${stderr}`)); // Include detailed error messages
-        } else {
-          resolve(stdout);
-        }
-      });
-    });
+    // Pull updates from the repository
+    let output = await execPromise(`git -C ${targetFolder} pull`);
+    
+    if (output.includes("Already up to date.")) {
+      return m.reply("✅ *Silva MD Bot is already up to date!* 🎉");
+    }
 
-    // Send a success message
-    m.reply('*✅ Silva MD Bot Update completed successfully!*');
+    m.reply("✅ *Silva MD Bot has been successfully updated!* 🚀\nRestart your bot to apply changes.");
+
   } catch (error) {
-    // Log and reply with error
-    console.error('Update error:', error);
-    m.reply(`*❌ Error during update:* ${error.message}`);
+    m.reply(`❌ *Update failed:* ${error.message}\nTry updating manually.`);
   }
 };
 
-handler.help = ['update'];
-handler.tags = ['system'];
-handler.command = /^update$/i;
+// Helper function to execute shell commands
+const execPromise = (command) =>
+  new Promise((resolve, reject) => {
+    exec(command, (err, stdout, stderr) => {
+      if (err) return reject(new Error(stderr.trim() || err.message));
+      resolve(stdout.trim());
+    });
+  });
 
+handler.help = ["update"];
+handler.tags = ["system"];
+handler.command = /^update$/i;
 handler.owner = true;
 
 export default handler;

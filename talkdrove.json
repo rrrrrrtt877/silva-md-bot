@@ -1,12 +1,11 @@
 {
-  "name": "𝐒𝐈𝐋𝐕𝐀 𝐌𝐃 𝐁𝐎𝐓",
-  "description": " with great power comes with great responsibilities. follow the deployment process below..",
-  "keywords": [
-    "whatsapp bot"
-  ],
-  "repository": "https://github.com/SilvaTechB/silva-md-bot",
-  "stack": "container",
-  "env": {
+  "bot-name": "silva-md-bot",
+  "description": "Silva MD Bot is an innovative tool designed to enhance your WhatsApp experience by automating various interactions and providing engaging features. Whether you’re looking for motivation, media downloads, or interactive polls, this bot has you covered",
+  "logo": "https://i.imgur.com/RvEKtPJ.jpeg",
+  "keywords": ["silva-md-bot", "silvatech", "Silva-Md-Bot"],
+  "documentation-link": "https://session-id.silvatechinc.my.id",
+  "owner-verification":"sylivanus.silva@gmail.com",
+"env": {
     "OWNERS": {
       "description": "owner numbers",
       "required": true,
@@ -39,16 +38,6 @@
     },
     "autoRead": {
       "description": "make it true or false if you want bot to read messages leave it blank if you don't want it to read messages",
-      "required": false,
-      "value": ""
-      },
-    "WELCOME_MSG": {
-      "description": "make it true or false if you want bot to Send welcome message when someone joins a group",
-      "required": false,
-      "value": ""
-      },
-    "GOODBYE_MSG": {
-      "description": "make it true or false if you want bot to Send goodbye message when someone leaves a group",
       "required": false,
       "value": ""
       },
@@ -87,25 +76,5 @@
       "required": false,
       "value": "true"
     }
-    },
-    "buildpacks": [
-    {
-      "url": "heroku/nodejs"
-    },
-    {
-      "url": "https://github.com/DuckyTeam/heroku-buildpack-imagemagick.git"
-    },
-    {
-      "url": "https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest"
-    },
-    {
-      "url": "https://github.com/clhuang/heroku-buildpack-webp-binaries.git"
     }
-  ],
-  "formation": {
-    "web": {
-      "quantity": 1,
-      "size": "basic"
-    }
-  }
-}
+     }
